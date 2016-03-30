@@ -1,0 +1,13 @@
+{
+  "name": "always-after-five2",
+  "version": "0.0.1",
+  "author": "Aaron TaylorMays",
+  "dependencies": {
+    "angular-animate": "^1.5.2",
+    "angular-touch": "^1.5.2",
+    "angular-ui-bootstrap": "^1.2.5",
+    "bootstrap": "^3.3.6",
+    "express": "^4.13.4",
+    "ng-focus-if": "^1.0.5"
+  }
+}

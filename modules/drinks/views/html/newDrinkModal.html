@@ -1,0 +1,68 @@
+<div class="modal-header">
+    <h3 class="modal-title">
+        <input type="text" placeholder="add drink name" ng-model="drinkName" ng-keypress="setDrinkName($event, drinkName)">
+    </h3>
+</div>
+<div class="modal-body">
+    <div ng-hide="cocktail.drinkName.length===0" class="row">
+        <div class="col-md-1">
+            <button type="button" ng-show="showRecipeView" ng-click="setShowIngredientView(true); setShowRecipeView(false)">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            </button>
+        </div>
+
+        <div class="col-md-10">
+            <!-- ingredient view -->
+            <div ng-show="showIngredientView">
+                <!-- add ingredient -->
+                <h5>ingredients</h5>
+                <div ng-repeat="ingredient in cocktail.ingredients">
+                    <ul>
+                        <li>{{ingredient.qty + ' ' + ingredient.units + ' ' + ingredient.name}}</li>
+                    </ul>
+                </div>
+                <div ng-show="showIngredientTxtBoxes">
+                    <input type="text" placeholder="quantity" focus-if="showIngredientTxtBoxes" ng-model="qty">
+                    <input type="text" placeholder="units" ng-model="units">
+                    <input type="text" placeholder="ingredient" ng-model="currIngredient" ng-keypress="addIngredient($event, qty, units, currIngredient)">
+                </div>
+                <div>
+                    <button type="button" ng-click="setShowIngredientTxtBoxes(true)">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> add ingredient
+                    </button>
+                </div>
+            </div>
+            
+            <!-- recipe view -->
+            <div ng-show="showRecipeView">
+                 <!-- add recipe -->
+                <h5>recipe</h5>
+                <div ng-repeat="step in cocktail.recipe">
+                    <ul>
+                        <li>{{step}}</li>
+                    </ul>
+                </div>
+                <div ng-show="showRecipeTxtBox">
+                    <input type="text" placeholder="add step" ng-model="currStep" ng-keypress="addStep($event, currStep)">
+                </div>
+                <div>
+                    <button type="button" ng-click="setShowRecipeTxtBox(true)">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> add step
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-1">
+            <button type="button" ng-show="showIngredientView  && cocktail.ingredients.length > 0" ng-click="setShowIngredientView(false); setShowRecipeView(true)">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            </button>
+        </div>
+                
+    </div>
+</div>
+<div class="modal-footer" ng-show="readyForReview()">
+    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

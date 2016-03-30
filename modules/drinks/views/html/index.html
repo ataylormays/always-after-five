@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app="drinks">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Always After Five</title>
+		<meta name="description" content="A website for your cocktails">
+		<meta name="viewport" content="width=device-width">
+
+		<link rel="stylesheet" href="/node_mods/bootstrap/dist/css/bootstrap.min.css">
+
+
+		<script src="/node_mods/angular/angular.js"></script>
+		<script src="/node_mods/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+		<script src="/node_mods/ng-focus-if/focusIf.min.js"></script>
+		<script type="text/javascript" src="/controllers/home-controller.js"></script>
+		
+	</head>
+
+	<body ng-controller="homeController">
+
+		<header>
+			<div>Title: {{title}}</div>
+		</header>
+
+		<p>Hello from alwaysafterfive.com!</p>
+
+		<button type="button">find drink</button>
+		<button type="button" ng-click="openNewDrinkModal()">add new drink</button>
+
+
+	</body>
+</html>
