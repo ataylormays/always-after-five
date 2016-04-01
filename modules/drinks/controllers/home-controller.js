@@ -19,14 +19,25 @@
 		// initialize scope variables
 		$scope.cocktail = {
 			drinkName: '',
+			equipment: [],
 			ingredients: [],
 			recipe: []
 		};
 
+		$scope.glasses = [
+			'rocks',
+			'highball',
+			'tumbler',
+			'martini'
+		]
+
 		$scope.qty = '';
 		$scope.units = '';
+		$scope.currTool = '';
 		$scope.currIngredient = '';
 		$scope.currStep = '';
+		$scope.showEquipmentView = false;
+		$scope.showEquipmentTxtBox = false;
 		$scope.showIngredientView = false;
 		$scope.showIngredientTxtBoxes = false;
 		$scope.showRecipeView = false;
@@ -43,6 +54,14 @@
 		$scope.readyForReview = function() {
 			return $scope.cocktail.ingredients.length > 0 && $scope.cocktail.recipe.length > 0;
 		};
+
+		$scope.setShowEquipmentView = function(bool) {
+			$scope.showEquipmentView = bool;
+		}
+
+		$scope.setShowEquipmentTxtBox = function(bool) {
+			$scope.showEquipmentTxtBox = bool;
+		}
 
 		$scope.setShowIngredientView = function(bool) {
 			$scope.showIngredientView = bool;
@@ -74,6 +93,20 @@
 			}
 		};
 
+		$scope.addEquipment = function(keyEvent, tool) {
+			//when pressing enter of non-empty field
+			if (keyEvent.which === 13 && tool != ''){
+				$scope.cocktail.equipment.push(tool);
+				$scope.currTool = '';
+				$scope.setShowEquipmentTxtBox(false);
+			}
+		};
+
+		$scope.setQty = function(qty) {
+			$scope.qty = qty.toString();
+			console.log('$scope.qty = ' + $scope.qty);
+		}
+
 		$scope.addIngredient = function(keyEvent, qty, units, ingredient) {
 			//when pressing enter of non-empty field
 			if (keyEvent.which === 13 && ingredient != ''){
@@ -96,6 +129,14 @@
 			}
 		};
 
+		$scope.range = function(min, max){
+			var result = [];
+			for(i = min; i <= max; i++){
+				result.push(i);
+			}
+			return result;
+		};
+
 		makeNewIngredient = function(qty, units, ingredient) { 
 			var newIngredient = {
 				qty: qty,
@@ -104,6 +145,16 @@
 			};
 
 			return newIngredient;
+		};
+	});
+
+	app.filter('range', function() {
+		return function(input, min, max) {
+			min = parseInt(min); //Make string input int
+			max = parseInt(max);
+			for (var i=min; i<max; i++)
+				input.push(i);
+			return input;
 		};
 	});
 
