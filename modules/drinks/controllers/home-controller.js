@@ -16,6 +16,15 @@
 
 	app.controller('newDrinkCtrl', function ($scope, $uibModalInstance) {
 
+		// initialize non-scope variables/functions
+		emptyQty = function() {
+			var emptyQty = {wholeNum:'',
+						mixedNum:'',
+						unit:''};
+
+			return emptyQty;
+		}
+
 		// initialize scope variables
 		$scope.cocktail = {
 			drinkName: '',
@@ -31,17 +40,22 @@
 			'martini'
 		]
 
-		$scope.qty = '';
 		$scope.units = '';
 		$scope.currTool = '';
 		$scope.currIngredient = '';
 		$scope.currStep = '';
+		$scope.qty = emptyQty();
+		$scope.currQty = emptyQty();
 		$scope.showEquipmentView = false;
 		$scope.showEquipmentTxtBox = false;
 		$scope.showIngredientView = false;
 		$scope.showIngredientTxtBoxes = false;
 		$scope.showRecipeView = false;
 		$scope.showRecipeTxtBox = false;
+		$scope.showQtyDropdown = false;
+
+		$scope.fractions = ['1/8','1/4', '3/8', '1/2', '5/8', '3/4','7/8'];
+		$scope.units = [' ', 'part', 'dash', 'oz', 'mL', 'cL']
 
 		$scope.ok = function () {
 			$uibModalInstance.close();
@@ -79,6 +93,10 @@
 			$scope.showRecipeTxtBox = bool;
 		}
 
+		$scope.toggleQtyDropdown = function() {
+			$scope.showQtyDropdown = !$scope.showQtyDropdown;
+		}
+
 		$scope.setDrinkName = function(keyEvent, drinkName) {
 			//when pressing enter of non-empty field
 			if (keyEvent.which === 13 && drinkName != ''){
@@ -102,19 +120,47 @@
 			}
 		};
 
-		$scope.setQty = function(qty) {
-			$scope.qty = qty.toString();
-			console.log('$scope.qty = ' + $scope.qty);
+		$scope.selectQtyComponent = function(event, parent, component, value) {
+			// scroll to center 
+			var containerId = '#' + parent;
+			var eventId = '#' + event.target.id.replace('/', '\\\\/');
+			$scope.scrollToCenter(containerId, eventId);
+
+			//add value to currQty
+			$scope.currQty[component] = value;
+			console.log('currQty[component]:' +$scope.currQty[component]);
 		}
 
-		$scope.addIngredient = function(keyEvent, qty, units, ingredient) {
+		$scope.scrollToCenter = function(containerId, scrollToId) {
+			console.log('scrollToCenter triggered on '+scrollToId+ ' with container '+containerId);
+			var container = $(containerId);
+			var scrollTo = $(scrollToId);
+			container.animate({
+				scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop() - container.height()/2 + scrollTo.height()/2
+			});
+			//$('#wholeNumbers').scrollTop();
+		};
+
+		$scope.addQty = function() {
+			$scope.qty = $scope.currQty;
+			console.log($scope.qty);
+			console.log($scope.qty.unit.length);
+
+			// clear currQty, close dropdown
+			$scope.currQty = emptyQty();
+			$scope.toggleQtyDropdown();
+
+		}
+
+		$scope.addIngredient = function(keyEvent, ingredient) {
 			//when pressing enter of non-empty field
 			if (keyEvent.which === 13 && ingredient != ''){
 				// add ingredient to scope, clear & hide fields
-				var newIngredient = makeNewIngredient(qty, units, ingredient);
+				var newIngredient = makeNewIngredient(ingredient);
 				$scope.cocktail.ingredients.push(newIngredient);
-				$scope.qty = '';
-				$scope.units = '';
+				$scope.qty = emptyQty();
+				console.log($scope.qty);
+				console.log('qty emptied, length: ' + $scope.qty.unit.length);
 				$scope.currIngredient = '';
 				$scope.setShowIngredientTxtBoxes(false);
 			}
@@ -137,10 +183,11 @@
 			return result;
 		};
 
-		makeNewIngredient = function(qty, units, ingredient) { 
+		makeNewIngredient = function(ingredient) { 
 			var newIngredient = {
-				qty: qty,
-				units: units,
+				wholeNum: $scope.qty.wholeNum,
+				mixedNum: $scope.qty.mixedNum,
+				unit: $scope.qty.unit,
 				name: ingredient
 			};
 

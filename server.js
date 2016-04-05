@@ -8,6 +8,7 @@ app.get('/', function(req, res){
 //middleware
 app.use('/node_mods/', express.static(__dirname + '/node_modules/'));
 app.use('/controllers/', express.static(__dirname + '/modules/drinks/controllers/'));
+app.use('/directives/', express.static(__dirname + '/modules/drinks/directives/'));
 app.use('/html/', express.static(__dirname + '/modules/drinks/views/html/'));
 app.use('/css/', express.static(__dirname + '/modules/drinks/views/css/'));
 app.use('/img/', express.static(__dirname + '/modules/drinks/views/img/'));

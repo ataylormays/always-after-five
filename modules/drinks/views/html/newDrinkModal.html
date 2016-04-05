@@ -44,32 +44,40 @@
                 <h5>
                     <em>ingredients</em>
                 </h5>
-                <div ng-repeat="ingredient in cocktail.ingredients">
+                <div ng-repeat="ing in cocktail.ingredients">
                     <ul>
-                        <li class="list-left">{{ingredient.qty + ' ' + ingredient.units + ' ' + ingredient.name}}</li>
+                        <li class="list-left">{{ing.wholeNum + ' ' + ing.mixedNum + ' ' + ing.unit + ' ' + ing.name}}</li>
                     </ul>
                 </div>
                 <div ng-show="showIngredientTxtBoxes">
+                    <!-- quantity display -->
+                    <div ng-hide="qty.unit.length===0">{{qty.wholeNum + ' ' + qty.mixedNum + ' ' + qty.unit}}</div>
                     <!-- quantity dropdown -->
-                    <div ng-show="qty.length > 0">{{qty}}</div>
-                    <div class="dropdown" ng-show="qty.length===0">
-                        <button class="btn btn-default dropdown-toggle pull-left" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <div class="dropdown" ng-show="qty.unit.length===0">
+                        <button class="btn btn-default pull-left" type="button" id="qtyDropdownMenu" ng-click="toggleQtyDropdown()">
                             quantity
                             <span class="caret"></span>
                         </button>
                         <!-- numbers -->
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                            <div class="col-md-6" id="qtyDropdown">
-                                <li class="list-center two-col-list" ng-repeat="n in range(1,10)">
-                                    <a ng-click="setQty(n)">{{n}}</a>
+                        <ul class="custom-dropdown-menu" ng-show="showQtyDropdown">
+                            <div class="col-md-3 no-padding n-col-list" id="wholeNumbersDiv">
+                                <li class="list-center" ng-repeat="n in range(1,10)">
+                                    <a id="qty-{{n}}" ng-class="{'blue-background' : currQty.wholeNum === n}" ng-click="selectQtyComponent($event, 'wholeNumbersDiv', 'wholeNum', n)">{{n}}</a>
                                 </li>
                             </div>
-                            <!-- <li class="list-center" ng-repeat="n in range(1,30)">
-                                    <a ng-click="setQty(n)">{{n}}</a>
-                                </li> -->
+                            <div class="col-md-3 no-padding n-col-list" id="fractionsDiv">
+                                <li class="list-center" ng-repeat="frac in fractions">
+                                    <a id="qty-frac-{{$index}}" ng-class="{'blue-background' : currQty.mixedNum === frac}" ng-click="selectQtyComponent($event, 'fractionsDiv', 'mixedNum', frac)">{{frac}}</a>
+                                </li>
+                            </div>
+                            <div class="col-md-6 no-padding n-col-list" id="unitsDiv">
+                                <li class="list-center" ng-repeat="unit in units">
+                                    <a id="qty-{{unit}}" ng-class="{'blue-background' : currQty.unit === unit}" ng-click="selectQtyComponent($event, 'unitsDiv', 'unit', unit); addQty()">{{unit}}</a>
+                                </li>
+                            </div>
                         </ul>
                     </div>
-                    <input type="text" placeholder="ingredient" ng-model="currIngredient" ng-keypress="addIngredient($event, qty, units, currIngredient)">
+                    <input type="text" placeholder="ingredient" ng-model="currIngredient" ng-keypress="addIngredient($event, currIngredient)">
                 </div>
                 <div>
                     <button type="button" class="btn" ng-click="setShowIngredientTxtBoxes(true)">
