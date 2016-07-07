@@ -51,7 +51,7 @@
                 </div>
                 <div ng-show="showIngredientTxtBoxes">
                     <!-- quantity display -->
-                    <div ng-hide="qty.unit.length===0">{{qty.wholeNum + ' ' + qty.mixedNum + ' ' + qty.unit}}</div>
+                    <div ng-hide="qty.unit.length===0" class="col-md-4">{{qty.wholeNum + ' ' + qty.mixedNum + ' ' + qty.unit}}</div>
                     <!-- quantity dropdown -->
                     <div class="dropdown" ng-show="qty.unit.length===0">
                         <button class="btn btn-default pull-left" type="button" id="qtyDropdownMenu" ng-click="toggleQtyDropdown()">
@@ -114,6 +114,6 @@
     </div>
 </div>
 <div class="modal-footer" ng-show="readyForReview()">
-    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+    <button class="btn btn-primary" type="button" ng-click="ok()">Submit</button>
     <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
 </div>
